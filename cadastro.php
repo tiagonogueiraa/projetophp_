@@ -28,15 +28,10 @@
             //remove as tags html
             //remove os espaco em branco do valor
             $$chave = trim(strip_tags($valor));
-
-            
+                        
         }
-           
+       
     }
-
-
-
-
 
 
     //validar se tem dados 
@@ -45,7 +40,7 @@
             $erro = "Campo nome obrigatório.";
         else 
             if (empty($_POST["email"]) || !filter_var($email, FILTER_VALIDATE_EMAIL))
-            $erro = "campo e-mail obrigatório";
+            $erro = "campo e-mail inválido ou não digitado";
 
         else {
 
@@ -66,6 +61,8 @@
                 echo " Bem vindo usuário: $email .";
             }
         }
+
+        
     }
 
     ?>
