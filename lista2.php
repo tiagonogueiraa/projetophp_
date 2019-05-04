@@ -10,7 +10,7 @@
 
 
     <style>
-     /*   table, th, td {
+        /*   table, th, td {
             border: 1px solid black;
         } */
     </style>
@@ -23,7 +23,18 @@
 
     include_once("conexao.php");
 
+    //itens porpagina 
+    $itens_por_pagina = 10;
 
+    //pegar pagina atual
+    $pagina = intval($_GET['pagina']);
+
+    //pegar a quantidadedeobjetos no banco de dads
+    $num_total = $mysqli->query("SELECT * FROM cliente")->num_rows;
+
+
+    //numero de paginas
+    $num_paginas = ceil($num_total / $itens_por_pagina);
     ?>
 
     <div class="container">
@@ -37,9 +48,10 @@
                 <td scope="col" cellspacing="2">Opção</td>
             </tr>
             <?php
-            $result = $obj_mysqli->query("SELECT * FROM cliente");
+            $result = $obj_mysqli->query("SELECT * FROM cliente LIMITE $pagina, $itens_por_pagina");
 
             while ($aux_query = $result->fetch_assoc()) {
+                $num = $result->num_rows;
                 echo "<tr>";
                 echo '<td> ' . $aux_query["id"] . '</td>';
                 echo '<td>' . $aux_query["nome"] . '</td>';
@@ -55,6 +67,16 @@
 
             ?>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
 
     </div>
 
