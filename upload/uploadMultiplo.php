@@ -74,9 +74,12 @@ if (isset($_FILES['arquivo'])) {
 
 
     <form action="upload.php" method="POST" enctype="multipart/form-data">
-        Arquivo: <input type="file" required name="arquivo">
+        Arquivo: <input type="file" required name="arquivo[]" multiple="multiple">
         <button type="submit">Salvar</button>
     </form>
+
+
+    
 </body>
 
 </html>

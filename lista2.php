@@ -13,6 +13,11 @@
         /*   table, th, td {
             border: 1px solid black;
         } */
+
+        .box {
+            
+            
+        }
     </style>
 </head>
 
@@ -23,63 +28,79 @@
 
     include_once("conexao.php");
 
-    //itens porpagina 
+    //itens por pagina definicao
     $itens_por_pagina = 10;
 
     //pegar pagina atual
-    $pagina = intval($_GET['pagina']);
+    if (empty($_GET['pagina'])) {
+        $pagina = 0;
+    } else {
+        $pagina = intval($_GET['pagina']);
+    }
+    echo "$pagina <br>";
 
-    //pegar a quantidadedeobjetos no banco de dads
-    $num_total = $mysqli->query("SELECT * FROM cliente")->num_rows;
 
+    $item = $pagina * $itens_por_pagina;
+    //pegar a quantidade de objetos no banco de dads
+    $sql = "SELECT nome, email FROM cliente LIMIT $item, $itens_por_pagina";
+    $execute = $conn->query($sql);
+    $cliente = $execute->fetch_assoc();
+    $num = $execute->num_rows;
+    //pegar a quantidade total de objetos no banco de dados
+    $num_total = $conn->query("SELECT * FROM cliente")->num_rows;
 
-    //numero de paginas
+    //definir numeros de paginas
     $num_paginas = ceil($num_total / $itens_por_pagina);
+    echo "$num_paginas <br>";
+    echo "$num_total <br>";
     ?>
+    <div class="container-fluid">
+<div class="row">
+    <div class="span5">
+        <?php if ($num > 0) {  ?>
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <td>Nome</td>
+                        <td>Email</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php do { ?>
+                        <tr>
+                            <td><?php echo $cliente['nome']; ?></td>
+                            <td><?php echo $cliente['email']; ?></td>
+                        </tr>
+                    <?php } while ($cliente = $execute->fetch_assoc()); ?>
+                </tbody>
+            </table>
+        <?php } ?>
 
-    <div class="container">
-        <table class="table">
-            <tr>
-                <td scope="col">Código</td>
-                <td scope="col">Nome</td>
-                <td scope="col">Email</td>
-                <td scope="col">Cidade</td>
-                <td scope="col">UF</td>
-                <td scope="col" cellspacing="2">Opção</td>
-            </tr>
-            <?php
-            $result = $obj_mysqli->query("SELECT * FROM cliente LIMITE $pagina, $itens_por_pagina");
-
-            while ($aux_query = $result->fetch_assoc()) {
-                $num = $result->num_rows;
-                echo "<tr>";
-                echo '<td> ' . $aux_query["id"] . '</td>';
-                echo '<td>' . $aux_query["nome"] . '</td>';
-                echo '<td>' . $aux_query["email"] . '</td>';
-                echo '<td>' . $aux_query["cidade"] . '</td>';
-                echo '<td>' . $aux_query["uf"] . '</td>';
-                echo '<td><a href="atualizar.php?id=' . $aux_query["id"] . '">Alterar</a>
-                <a href="excluir.php?id=' . $aux_query["id"] . '">Excluir</a>          
-                </td>';
-                echo "</tr>";
-            }
-
-
-            ?>
-        </table>
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <li class="page-item"><a class="page-link" href="lista2.php?pagina=0">Previous</a></li>
+                <?php for ($i = 0; $i < $num_paginas; $i++) {
+                    $estilo = "";
+                    if ($pagina == $i)
+                        $estilo = "class=\"active\"";
+                    ?>
+                    <li class="page-item"><a class="page-link <?php echo $estilo; ?>" href="lista2.php?pagina=<?= $i ?>"><?php echo $i + 1; ?></a></li>
+                <?php } ?>
+                <li class="page-item"><a class="page-link" href="lista2.php?pagina=<?= $num_paginas - 1; ?>">Next</a></li>
             </ul>
         </nav>
 
     </div>
 
+    <?php for ($i = 0; $i < $num_total; $i++) {
+        echo $cliente['nome'];
+    }
+
+    ?>
+    </div>
+    </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

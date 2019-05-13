@@ -37,7 +37,7 @@
                 <td scope="col" cellspacing="2">Opção</td>
             </tr>
             <?php
-            $result = $obj_mysqli->query("SELECT * FROM cliente");
+            $result = $conn->query("SELECT * FROM cliente");
 
             while ($aux_query = $result->fetch_assoc()) {
                 echo "<tr>";

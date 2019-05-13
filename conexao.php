@@ -1,10 +1,10 @@
 <?php 
 
-    $obj_mysqli = new mysqli("127.0.0.1", "root", "", "projeto");
+    $conn = mysqli_connect("127.0.0.1", "root", "", "projeto");
 
-    if ($obj_mysqli->connect_errno)
+    if (!$conn)
     {
-        echo "Ocorreu um erro na conexão com o banco de dados.";
+        echo "Ocorreu um erro na conexão com o banco de dados." . mysqli_connect_error();
     }
 
 

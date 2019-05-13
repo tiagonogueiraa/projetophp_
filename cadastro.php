@@ -34,6 +34,8 @@
     }
 
 
+    
+
     //validar se tem dados 
     if (isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["cidade"]) && isset($_POST["uf"])) {
         if (empty($_POST["nome"]))
@@ -52,7 +54,7 @@
             $uf = $_POST['uf'];
 
 
-            $stmt = $obj_mysqli->prepare("INSERT INTO cliente (nome, email, cidade , uf ) VALUES (?,?,?,?)");
+            $stmt = $conn->prepare("INSERT INTO cliente (nome, email, cidade , uf ) VALUES (?,?,?,?)");
             $stmt->bind_param('ssss', $nome, $email, $cidade, $uf);   //    $mysqli_set_charset($obj)
             if (!$stmt->execute()) {
                 $erro = $stmt->error;
